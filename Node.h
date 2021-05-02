@@ -5,6 +5,8 @@ using namespace std;
 
 class Node {
 
+    public:
+        Node(); //constructor
 
 
 
