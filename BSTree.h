@@ -7,6 +7,12 @@ class BSTree
 private:
    Node *root;
 
+   //helper functions
+   string inOrder(Node*) const;
+   string postOrder(Node*) const;
+   string preOrder(Node*) const;
+   void deletetraverse(Node*);
+
 public:
    /* Constructors */
    /* Default constructor */

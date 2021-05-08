@@ -1,5 +1,5 @@
 #include "BSTree.h"
-
+#include <iostream>
 using namespace std;
 
 BSTree::BSTree(){
@@ -33,4 +33,67 @@ void BSTree::insert(const string& newdata){
         curr->increaseCount();
         delete newnode;
     }
+}
+
+//dont question this one. its the worst function ive ever written i think
+bool BSTree::search(const string& lookforthis) const{
+    Node* curr = root;
+    while (lookforthis != curr->getData()){
+        if (curr->hasChild() == false){
+            return false;
+        }     
+        if (lookforthis > curr->getData()){
+            curr = curr->getRightChild();
+        } else {
+            curr = curr->getLeftChild();
+        }
+        if (curr == nullptr){
+            return false;
+        }
+    }
+    return true;
+}
+
+void BSTree::inOrder() const{
+    inOrder(root);
+}
+
+string BSTree::inOrder(Node* start) const{
+    if (start == nullptr){return;}
+    inOrder(start->getLeftChild());
+    cout << start->getData() << endl;
+    inOrder(start->getRightChild());
+}
+
+void BSTree::postOrder() const{
+    postOrder(root);
+}
+
+string BSTree::postOrder(Node* start) const{
+    if (start == nullptr){return;}
+    postOrder(start->getLeftChild());
+    postOrder(start->getRightChild());
+    cout << start->getData() << endl;
+}
+
+void BSTree::preOrder() const{
+    preOrder(root);
+}
+
+string BSTree::preOrder(Node* start) const{
+    if (start == nullptr){return;}
+    cout << start->getData() << endl;
+    preOrder(start->getLeftChild());
+    preOrder(start->getRightChild());
+}
+
+BSTree::~BSTree(){
+    deletetraverse(root);
+}
+
+void BSTree::deletetraverse(Node* start){
+    if (start == nullptr){return;}
+    deletetraverse(start->getLeftChild());
+    deletetraverse(start->getRightChild());
+    delete start;
 }
