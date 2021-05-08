@@ -17,18 +17,22 @@ class Node {
         Node* getLeftChild();
         Node* getRightChild();
         Node* getParent();
+        bool hasChild();
+        int getCount();
 
         //Mutators
         void setData(string);
         void setRightChild(Node*);
         void setLeftChild(Node*);
         void setParent(Node*);
+        void increaseCount();
 
     private:
         string data;
         Node* parent;
         Node* leftChild;
         Node* rightChild;
+        int count;
 
 };
 
