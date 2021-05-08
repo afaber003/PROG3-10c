@@ -1,6 +1,7 @@
 #include <iostream>
 #include <limits>
 #include "BSTree.h"
+#include "tests.h"
 
 using namespace std;
 

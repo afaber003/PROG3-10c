@@ -58,7 +58,7 @@ void BSTree::inOrder() const{
     inOrder(root);
 }
 
-string BSTree::inOrder(Node* start) const{
+void BSTree::inOrder(Node* start) const{
     if (start == nullptr){return;}
     inOrder(start->getLeftChild());
     cout << start->getData() << '(' << start->getCount() << ')'  << endl;
@@ -69,7 +69,7 @@ void BSTree::postOrder() const{
     postOrder(root);
 }
 
-string BSTree::postOrder(Node* start) const{
+void BSTree::postOrder(Node* start) const{
     if (start == nullptr){return;}
     postOrder(start->getLeftChild());
     postOrder(start->getRightChild());
@@ -80,7 +80,7 @@ void BSTree::preOrder() const{
     preOrder(root);
 }
 
-string BSTree::preOrder(Node* start) const{
+void BSTree::preOrder(Node* start) const{
     if (start == nullptr){return;}
     cout << start->getData() << '(' << start->getCount() << ')'  << endl;
     preOrder(start->getLeftChild());
