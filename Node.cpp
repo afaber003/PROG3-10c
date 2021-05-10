@@ -61,3 +61,24 @@ int Node::getCount(){
 void Node::increaseCount(){
     count++;
 }
+
+bool Node::leftChildExists()
+{
+  if (leftChild != nullptr)
+  {
+    return true;
+  }
+
+  return false;
+}
+
+bool Node::rightChildExists()
+{
+  if (rightChild != nullptr)
+  {
+    return true;
+  }
+
+  return false;
+}
+

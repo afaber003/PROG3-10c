@@ -67,6 +67,8 @@ public:
    void preOrder() const;
    void postOrder() const;
    void inOrder() const;
+
+   Node* findNode(string, Node*) const;
 };
 
 #endif // __BSTREE_H__

@@ -18,7 +18,10 @@ class Node {
         Node* getRightChild();
         Node* getParent();
         bool hasChild();
+        bool leftChildExists();
+        bool rightChildExists();
         int getCount();
+        Node* findNode(const string &);
 
         //Mutators
         void setData(string);
@@ -26,6 +29,7 @@ class Node {
         void setLeftChild(Node*);
         void setParent(Node*);
         void increaseCount();
+        
 
     private:
         string data;
