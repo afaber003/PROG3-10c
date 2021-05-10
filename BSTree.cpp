@@ -63,41 +63,42 @@ string BSTree::largest() const
 {
   Node* curr = root;
   string largestString = ""; 
-  while (curr->hasChild() == true)
+  while (curr->rightChildExists() == true)
   {
-    if (curr->rightChildExists())
-    {
-      largestString = curr->getRightChild()->getData();
-      curr = curr->getRightChild();
-    }
-    else
-    { 
-      largestString = curr->getLeftChild()->getData();
-      curr = curr->getLeftChild();
-    }
+    curr = curr->getRightChild();
   }
+  largestString = curr->getData();
+  if (curr == nullptr)
+  {
+    largestString = "";
+  }
+  
+
 
   return largestString;
 }
+
+/*
+  while (curr->rightChildExists)
+  {
+
+  }
+
+*/
 
 string BSTree::smallest() const
 {
   Node* curr = root;
   string smallestString = "";
 
-  while (curr->hasChild() == true)
+  while (curr->leftChildExists() == true)
   {
-    if (curr->leftChildExists())
-    {
-      smallestString = curr->getLeftChild()->getData();
-      curr = curr->getLeftChild();
-    }
-    else
-    {
-      smallestString = curr->getLeftChild()->getData();
-      curr = curr->getRightChild();
-    }
-    
+    smallestString = curr->getLeftChild()->getData();
+  }
+  smallestString = curr->getData();
+  if (curr == nullptr)
+  {
+    smallestString = "";
   }
 
   return smallestString;
