@@ -12,6 +12,7 @@ private:
    void postOrder(Node*) const;
    void preOrder(Node*) const;
    void deletetraverse(Node*);
+   Node* findNode(string, Node*) const;
 
 public:
    /* Constructors */
@@ -68,7 +69,9 @@ public:
    void postOrder() const;
    void inOrder() const;
 
-   Node* findNode(string, Node*) const;
+  
+
+
 };
 
 #endif // __BSTREE_H__
