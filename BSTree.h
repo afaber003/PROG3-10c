@@ -13,6 +13,7 @@ private:
    void preOrder(Node*) const;
    void deletetraverse(Node*);
    Node* findNode(string, Node*) const;
+   int findHeight(Node*);
 
 public:
    /* Constructors */

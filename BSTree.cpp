@@ -117,6 +117,7 @@ int BSTree::height(const string &startString) const
   }
   else
   {
+    //Fix
     startStringNode = findNode(startString, root);
     if (startStringNode->leftChildExists() && startStringNode->rightChildExists())
     {
@@ -142,6 +143,8 @@ int BSTree::height(const string &startString) const
 
   return treeHeight; 
 }
+
+//Put Find Height here
 
 void BSTree::inOrder() const{
     inOrder(root);
@@ -210,3 +213,6 @@ Node* BSTree::findNode(string nodeData, Node* startNode) const
   return currNode;
   
 }
+
+
+
