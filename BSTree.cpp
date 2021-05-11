@@ -55,6 +55,7 @@ start:
 void BSTree::remove(const string& key) {
   //Nodes related to Key
   Node* nodeToDelete = findNode(key, root);
+  Node* replacementNode = nullptr;
   //Node* keyParent = nodeToDelete->getParent();
 
   //Nodes related to Key's Successor
@@ -70,6 +71,12 @@ void BSTree::remove(const string& key) {
   if (search(nodeToDelete->getData()) == false)
   {
     return;
+  }
+  //If the deleted node is the root and only element
+  else if (nodeToDelete->hasChild() == false && nodeToDelete == root)
+  {
+    delete root;
+    root = nullptr;
   }
   //For leaf node
   else if (nodeToDelete->hasChild() == false)
@@ -98,12 +105,55 @@ void BSTree::remove(const string& key) {
     //If the deleted node only has a right child
     if (nodeToDelete->rightChildExists() == true && nodeToDelete->leftChildExists() == false)
     {
-      Node* keyParent = nodeToDelete->getParent();
-      keyParent->setRightChild(nodeToDelete->getRightChild());
+      
       if (nodeToDelete == root)
       {
-        
+        Node* newRoot = nodeToDelete->getRightChild();
+        delete root;
+        root = newRoot;
       }
+      else
+      {
+        Node* keyParent = nodeToDelete->getParent();
+        keyParent->setRightChild(nodeToDelete->getRightChild());
+        delete nodeToDelete;
+      }
+      return;
+    }
+    //If the deleted node only has a left child
+    else if (nodeToDelete->rightChildExists() == false && nodeToDelete->leftChildExists() == true)
+    {
+      if (nodeToDelete == root)
+      {
+        Node* newRoot = nodeToDelete->getLeftChild();
+        delete root;
+        root = newRoot;
+      }
+      else
+      {
+        Node* keyParent = nodeToDelete->getParent();
+        keyParent->setLeftChild(nodeToDelete->getLeftChild());
+        delete nodeToDelete;
+      }
+      return;
+    }
+    //If the deleted node has two children
+    else if (nodeToDelete->rightChildExists() == true && nodeToDelete->leftChildExists() == true)
+    {
+      //If the successor exists
+      if (search(findSuccessor(nodeToDelete)->getData())== true)
+      {
+        replacementNode = findSuccessor(nodeToDelete);
+      }
+      //If the predecessor exists
+      else if (search(findPredecessor(nodeToDelete)->getData()) == true)
+      {
+        replacementNode = findPredecessor(nodeToDelete);
+      }
+
+      nodeToDelete->getData() = replacementNode->getData();
+      remove(replacementNode->getData());
+
     }
   }
 
@@ -197,41 +247,70 @@ int BSTree::findHeight(Node* start) const {
 
 void BSTree::inOrder() const {
     inOrder(root);
+    cout << endl;
 }
 
 void BSTree::inOrder(Node* start) const {
+    /*
     if (start == nullptr) {
         return;
     }
     inOrder(start->getLeftChild());
     cout << start->getData() << '(' << start->getCount() << ')' << endl;
     inOrder(start->getRightChild());
+    */
+    if (start == nullptr) {
+        return;
+    }
+    inOrder(start->getLeftChild());
+    cout << start->getData() << '(' << start->getCount() << ')' << ", ";
+    inOrder(start->getRightChild());
+    //cout << endl;
 }
 
 void BSTree::postOrder() const {
     postOrder(root);
+    cout << endl;
 }
 
 void BSTree::postOrder(Node* start) const {
+    /*
     if (start == nullptr) {
         return;
     }
     postOrder(start->getLeftChild());
     postOrder(start->getRightChild());
     cout << start->getData() << '(' << start->getCount() << ')' << endl;
+    */
+    if (start == nullptr) {
+        return;
+    }
+    postOrder(start->getLeftChild());
+    postOrder(start->getRightChild());
+    cout << start->getData() << '(' << start->getCount() << ')' << ", ";
 }
 
 void BSTree::preOrder() const {
     preOrder(root);
+    cout << endl;
 }
 
 void BSTree::preOrder(Node* start) const {
+    /*
     if (start == nullptr) {
         return;
     }
     cout << start->getData() << '(' << start->getCount() << ')' << endl;
     preOrder(start->getLeftChild());
     preOrder(start->getRightChild());
+    */
+    if (start == nullptr) {
+        return;
+    }
+    cout << start->getData() << '(' << start->getCount() << ')' << ", ";
+    preOrder(start->getLeftChild());
+    preOrder(start->getRightChild());
+    //cout << endl;
 }
 
 BSTree::~BSTree() {
@@ -285,104 +364,3 @@ Node* BSTree::findPredecessor(Node * startNode)
   return currNode;
 }
 
-/*
-void BSTree::remove(const string& key) {
-  //Nodes related to Key
-  Node* nodeToDelete = findNode(key, root);
-  Node* keyParent = nodeToDelete->getParent();
-
-  //Nodes related to Key's Successor
-  Node* keySuccessor = findSuccessor(nodeToDelete);
-  Node* SuccessorParent = keySuccessor->getParent();
-  Node* SuccessorChild = keySuccessor->getRightChild();
-  
-  //Nodes related to Key's Predecessor
-  Node* keyPredecessor = findPredecessor(nodeToDelete);
-  Node* PredecessorParent = keySuccessor->getParent();
-  Node* PredecessorChild = keySuccessor->getLeftChild();
-
-  //If the node has a count greater than 1
-  if (nodeToDelete->getCount() > 1)
-  {
-    nodeToDelete->decreaseCount();
-    return;
-  }
-  //If root
-  if (nodeToDelete == root)
-  {
-
-    if (keySuccessor != root)
-    {
-      if (root->leftChildExists() && root->getRightChild() == keySuccessor)
-      {
-        keySuccessor->setLeftChild(root->getLeftChild());
-        delete root;
-        root = keySuccessor;
-        return;
-      }
-      
-      else if (root->getLeftChild() == nullptr && root->getRightChild() == keySuccessor)
-      {
-        cout << "test";
-        //keySuccessor->setParent(nullptr);
-        //root->setRightChild(nullptr);
-        delete root;
-        root = keySuccessor;
-        //root->setParent(nullptr);
-        return;
-      }
-      
-      
-      if (root->leftChildExists() && root->getRightChild() != keySuccessor)
-      {
-        root->setData(keySuccessor->getData());
-        keySuccessor->setParent(nullptr);
-        if (keySuccessor->rightChildExists())
-        {
-          keyParent->setLeftChild(keySuccessor->getRightChild());
-        }
-        keySuccessor->setLeftChild(root->getLeftChild());
-        keySuccessor->setRightChild(keyParent);
-        delete root;
-        root = keySuccessor;
-        return;
-
-      }
-      
-      
-    }
-    
-  
-    else if (keyPredecessor != nullptr)
-    {
-      if(PredecessorParent->getLeftChild() == keySuccessor){
-        SuccessorParent->setLeftChild(SuccessorChild); //todo add setparent
-      }
-      else
-      {
-        SuccessorParent->setRightChild(SuccessorChild);
-      }
-      SuccessorChild->setParent(SuccessorParent);
-
-      root->getData() = keyPredecessor->getData();
-
-      delete keyPredecessor;
-    }
-  }
-  //If key is a leaf node
-  else if (nodeToDelete->hasChild() == false && keyParent->getData() > nodeToDelete->getData())
-  {
-    delete nodeToDelete;
-    keyParent->setLeftChild(nullptr);
-  }
-  else if (nodeToDelete->hasChild() == false && keyParent->getData() < nodeToDelete->getData())
-  {
-    delete nodeToDelete;
-    keyParent->setRightChild(nullptr);
-  }
-
-  //If Successor Exists
-  //if (keySuccessor != nullptr && )
-
-}
-*/
