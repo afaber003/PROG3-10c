@@ -28,6 +28,7 @@ class Node {
         void setRightChild(Node*);
         void setLeftChild(Node*);
         void setParent(Node*);
+        void setCount(int);
         void increaseCount();
         void decreaseCount();
         

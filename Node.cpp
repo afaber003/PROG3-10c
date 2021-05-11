@@ -39,12 +39,27 @@ void Node::setParent(Node* newparent){
 
 void Node::setLeftChild(Node* newleft){
     this->leftChild = newleft;
-    newleft->parent = this;
+    if (newleft == nullptr)
+    {
+      return;
+    }
+    else
+    {
+      newleft->parent = this;
+    }
+
 }
 
 void Node::setRightChild(Node* newright){
     this->rightChild = newright;
-    newright->parent = this;
+    if (newright == nullptr)
+    {
+      return;
+    }
+    else 
+    {
+      newright->parent = this;
+    }
 }
 
 bool Node::hasChild(){
@@ -87,3 +102,7 @@ bool Node::rightChildExists()
   return false;
 }
 
+void Node::setCount(int newCount)
+{
+  this->count = newCount;
+}
