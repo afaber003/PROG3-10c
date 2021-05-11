@@ -5,15 +5,6 @@
 
 using namespace std;
 
-void printOrders(BSTree *tree) {
-  cout << "Preorder = ";
-  tree->preOrder( );
-  cout << "Inorder = ";
-  tree->inOrder( );
-  cout << "Postorder = ";
-  tree->postOrder( );
-}
-
 int menu() {
   int choice = 0;
   cout << endl << "Enter menu choice: ";
@@ -28,9 +19,7 @@ int menu() {
     << "7. Height" << endl
     << "8. Quit" << endl;
   cin >> choice;
-  
-  // fix buffer just in case non-numeric choice entered
-  // also gets rid of newline character
+
   cin.clear();
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
   return choice;
@@ -69,7 +58,6 @@ int main( ) {
           getline(cin, entry);
           cout << tree.height(entry) << endl;
         }
-        //fix buffer just in case non-numeric choice entered
         choice = menu();
     }
     return 0;
