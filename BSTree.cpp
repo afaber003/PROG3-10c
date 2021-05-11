@@ -100,12 +100,19 @@ int BSTree::height(const string& startString) const {
     return ans;
 }
 
+//random helper function that I just didnt want to code into the actual parent function
+//the only time it is used is right below this function
+int larger(int one, int two){
+    if (one < two){return two;}
+    return one;
+}
+
 int BSTree::findHeight(Node* start) const {
     if (start == nullptr){return 0;}
     if (start->hasChild() == false){
         return 0;
     } else {
-        return 1 + findHeight(start->getLeftChild() + findHeight(start->getRightChild()));
+        return 1 + larger(findHeight(start->getLeftChild()), findHeight(start->getRightChild()));
     }
 }
 
