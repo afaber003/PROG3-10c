@@ -79,14 +79,6 @@ string BSTree::largest() const {
     return largestString;
 }
 
-/*
-  while (curr->rightChildExists)
-  {
-
-  }
-
-*/
-
 string BSTree::smallest() const {
     Node* curr = root;
     string smallestString = "";
