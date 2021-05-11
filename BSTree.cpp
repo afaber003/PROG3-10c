@@ -9,34 +9,32 @@ BSTree::BSTree() {
 
 void BSTree::insert(const string& newdata) {
     Node* newnode = new Node(newdata);
-    if (root == nullptr) { // case for empty Tree
+    if (root == nullptr) {  // case for empty Tree
         root = newnode;
         return;
-    }  
+    }
     Node* curr = root;
 start:
-    if (newdata == curr->getData()){ // if data is identical
+    if (newdata == curr->getData()) {  // if data is identical
         curr->increaseCount();
         return;
     }
     // case for if newdata is larger than curr
-    if (newdata > curr->getData()){
-        if (curr->getRightChild() != nullptr){ //if its not the bottom of the tree yet
+    if (newdata > curr->getData()) {
+        if (curr->getRightChild() != nullptr) {  //if its not the bottom of the tree yet
             curr = curr->getRightChild();
             goto start;
-        }
-        else {  // if it reached the bottom of the tree
+        } else {  // if it reached the bottom of the tree
             curr->setRightChild(newnode);
             return;
         }
     }
     // case for if newdata is smaller than curr
-    if (newdata < curr->getData()){
-        if (curr->getLeftChild() != nullptr){
+    if (newdata < curr->getData()) {
+        if (curr->getLeftChild() != nullptr) {
             curr = curr->getLeftChild();
             goto start;
-        }
-        else {
+        } else {
             curr->setLeftChild(newnode);
             return;
         }
@@ -94,22 +92,28 @@ string BSTree::smallest() const {
 }
 
 int BSTree::height(const string& startString) const {
-    if (!search(startString)){return -1;} // case for string doesnt exist
+    if (!search(startString)) {  // case for string doesnt exist
+        return -1;
+    }
     Node* curr = findNode(startString, root);
-    int ans = findHeight(curr); //calls recursive function
+    int ans = findHeight(curr);  //calls recursive function
     return ans;
 }
 
 //random helper function that I just didnt want to code into the actual parent function
 //the only time it is used is right below this function
-int larger(int one, int two){
-    if (one < two){return two;}
+int larger(int one, int two) {
+    if (one < two) {
+        return two;
+    }
     return one;
 }
 
 int BSTree::findHeight(Node* start) const {
-    if (start == nullptr){return 0;}
-    if (start->hasChild() == false){
+    if (start == nullptr) {
+        return 0;
+    }
+    if (start->hasChild() == false) {
         return 0;
     } else {
         return 1 + larger(findHeight(start->getLeftChild()), findHeight(start->getRightChild()));
