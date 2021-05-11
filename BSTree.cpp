@@ -68,10 +68,11 @@ void BSTree::remove(const string& key) {
   //Node* PredecessorParent = keySuccessor->getParent();
   //Node* PredecessorChild = keySuccessor->getLeftChild();
 
-  if (search(nodeToDelete->getData()) == false)
+  if (search(key) == false)
   {
     return;
   }
+  
   //If the deleted node is the root and only element
   else if (nodeToDelete->hasChild() == false && nodeToDelete == root)
   {
@@ -162,7 +163,14 @@ void BSTree::remove(const string& key) {
 }
 
 //dont question this one. its the worst function ive ever written i think
+
 bool BSTree::search(const string& lookforthis) const {
+    Node* searchNode = findNode(lookforthis, root);
+    if (searchNode == nullptr)
+    {
+      return false;
+    }
+    /*
     Node* curr = root;
     while (lookforthis != curr->getData()) {
         if (curr->hasChild() == false) {
@@ -178,7 +186,37 @@ bool BSTree::search(const string& lookforthis) const {
         }
     }
     return true;
+    */
+    return true;
 }
+/*
+Node* BSTree::search(const string &str, Node* curr) const // HELPER FUNCTION
+{
+  
+  if(curr != nullptr) // traversing through tree
+  {
+    if(str == curr -> strData) 
+    {
+        return curr;
+    }
+    else 
+    { 
+      if(str < curr -> strData) // goes to left subtree 
+      {
+        return (search(str, curr -> leftChild)); 
+      }
+      else //if (str > curr -> strData) // goes to right subtree 
+      {
+        return (search(str, curr -> rightChild));
+      }
+    }
+  }
+  else 
+  {
+    return 0;
+  }
+} 
+*/
 
 string BSTree::largest() const {
     
@@ -337,6 +375,10 @@ Node* BSTree::findNode(string nodeData, Node* startNode) const {
         } else {
             currNode = currNode->getRightChild();
         }
+    }
+    if (currNode == nullptr)
+    {
+      return nullptr;
     }
 
     return currNode;
