@@ -29,6 +29,7 @@ class Node {
         void setLeftChild(Node*);
         void setParent(Node*);
         void increaseCount();
+        void decreaseCount();
         
 
     private:

@@ -45,6 +45,109 @@ start:
 }
 
 void BSTree::remove(const string& key) {
+  //Nodes related to Key
+  Node* nodeToDelete = findNode(key, root);
+  Node* keyParent = nodeToDelete->getParent();
+
+  //Nodes related to Key's Successor
+  Node* keySuccessor = findSuccessor(nodeToDelete);
+  Node* SuccessorParent = keySuccessor->getParent();
+  Node* SuccessorChild = keySuccessor->getRightChild();
+  
+  //Nodes related to Key's Predecessor
+  Node* keyPredecessor = findPredecessor(nodeToDelete);
+  Node* PredecessorParent = keySuccessor->getParent();
+  Node* PredecessorChild = keySuccessor->getLeftChild();
+
+  //If the node has a count greater than 1
+  if (nodeToDelete->getCount() > 1)
+  {
+    nodeToDelete->decreaseCount();
+    return;
+  }
+  //If root
+  if (nodeToDelete == root)
+  {
+    if (keySuccessor != nullptr)
+    {
+      if (SuccessorChild == nullptr)
+      {
+        SuccessorChild = nullptr;
+        if (SuccessorParent == root)
+        {
+          root->getData() = keySuccessor->getData();
+          delete keySuccessor;
+          return;
+          //set the root's right child's left child to be root's left child
+          //Dont look at anything beyond this point
+        }
+        SuccessorParent->setLeftChild(SuccessorChild);
+      }
+      else
+      {
+        SuccessorParent->setLeftChild(SuccessorChild);
+        SuccessorChild->setParent(SuccessorParent);
+      }
+
+      root->getData() = keySuccessor->getData();
+      delete keySuccessor;
+      
+      
+      /*
+      if(SuccessorParent->getRightChild() == keySuccessor){
+        SuccessorParent->setRightChild(SuccessorChild);
+      }
+      else
+      {
+        SuccessorParent->setLeftChild(SuccessorChild);
+      }
+      SuccessorChild->setParent(SuccessorParent);
+
+      root->getData() = keySuccessor->getData();
+      
+      if (nodeToDelete->rightChildExists())
+      {
+        nodeToDelete->getRightChild()->setParent(root);
+      }
+      if (nodeToDelete->leftChildExists())
+      {
+        nodeToDelete->getLeftChild()->setParent(root);
+      }
+      */
+
+      //delete keySuccessor;
+    }
+    else if (keyPredecessor != nullptr)
+    {
+      if(PredecessorParent->getLeftChild() == keySuccessor){
+        SuccessorParent->setLeftChild(SuccessorChild); //todo add setparent
+      }
+      else
+      {
+        SuccessorParent->setRightChild(SuccessorChild);
+      }
+      SuccessorChild->setParent(SuccessorParent);
+
+      root->getData() = keyPredecessor->getData();
+
+      delete keyPredecessor;
+    }
+  }
+  //If key is a leaf node
+  else if (nodeToDelete->hasChild() == false && keyParent->getData() > nodeToDelete->getData())
+  {
+    delete nodeToDelete;
+    keyParent->setLeftChild(nullptr);
+  }
+  else if (nodeToDelete->hasChild() == false && keyParent->getData() < nodeToDelete->getData())
+  {
+    delete nodeToDelete;
+    keyParent->setRightChild(nullptr);
+  }
+
+  //If Successor Exists
+  //if (keySuccessor != nullptr && )
+
 }
 
 //dont question this one. its the worst function ive ever written i think
@@ -67,29 +170,37 @@ bool BSTree::search(const string& lookforthis) const {
 }
 
 string BSTree::largest() const {
+    
     Node* curr = root;
     string largestString = "";
+    if (root == nullptr) {
+        return "";
+    }
     while (curr->rightChildExists() == true) {
         curr = curr->getRightChild();
     }
     largestString = curr->getData();
-    if (curr == nullptr) {
-        largestString = "";
+    if (root == nullptr) {
+        return "";
     }
 
     return largestString;
+
 }
 
 string BSTree::smallest() const {
     Node* curr = root;
     string smallestString = "";
 
+    if (root == nullptr) {
+        return "";
+    }
     while (curr->leftChildExists() == true) {
-        smallestString = curr->getLeftChild()->getData();
+       curr = curr->getLeftChild();
     }
     smallestString = curr->getData();
-    if (curr == nullptr) {
-        smallestString = "";
+    if (root == nullptr) {
+        return "";
     }
     return smallestString;
 }
@@ -189,4 +300,26 @@ Node* BSTree::findNode(string nodeData, Node* startNode) const {
     }
 
     return currNode;
+}
+
+Node* BSTree::findSuccessor(Node* startNode)
+{
+  Node* currNode = startNode->getRightChild();
+  while (currNode->getLeftChild() != nullptr)
+  {
+    currNode = currNode->getLeftChild();
+  }
+
+  return currNode;
+}
+
+Node* BSTree::findPredecessor(Node * startNode)
+{
+  Node* currNode = startNode->getLeftChild();
+  while (currNode->getRightChild() != nullptr)
+  {
+    currNode = currNode->getRightChild();
+  }
+
+  return currNode;
 }

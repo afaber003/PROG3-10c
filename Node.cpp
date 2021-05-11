@@ -58,8 +58,13 @@ int Node::getCount(){
     return count;
 }
 
+
 void Node::increaseCount(){
     count++;
+}
+
+void Node::decreaseCount(){
+  count--;
 }
 
 bool Node::leftChildExists()
