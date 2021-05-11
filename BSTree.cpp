@@ -19,6 +19,7 @@ start:
         curr->increaseCount();
         return;
     }
+    // case for if newdata is larger than curr
     if (newdata > curr->getData()){
         if (curr->getRightChild() != nullptr){ //if its not the bottom of the tree yet
             curr = curr->getRightChild();
@@ -29,6 +30,7 @@ start:
             return;
         }
     }
+    // case for if newdata is smaller than curr
     if (newdata < curr->getData()){
         if (curr->getLeftChild() != nullptr){
             curr = curr->getLeftChild();
