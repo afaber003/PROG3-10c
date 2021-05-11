@@ -17,15 +17,18 @@ void BSTree::insert(const string& newdata) {
 start:
     if (newdata == curr->getData()) {  // if data is identical
         curr->increaseCount();
+        delete newnode;
         return;
     }
     // case for if newdata is larger than curr
     if (newdata > curr->getData()) {
         if (curr->getRightChild() != nullptr) {  //if its not the bottom of the tree yet
             curr = curr->getRightChild();
+            newnode->setParent(curr);
             goto start;
         } else {  // if it reached the bottom of the tree
             curr->setRightChild(newnode);
+            newnode->setParent(curr);
             return;
         }
     }
@@ -33,9 +36,11 @@ start:
     if (newdata < curr->getData()) {
         if (curr->getLeftChild() != nullptr) {
             curr = curr->getLeftChild();
+            newnode->setParent(curr);
             goto start;
         } else {
             curr->setLeftChild(newnode);
+            newnode->setParent(curr);
             return;
         }
     }
