@@ -53,124 +53,101 @@ start:
 
 */
 void BSTree::remove(const string& key) {
-  //Nodes related to Key
-  Node* nodeToDelete = findNode(key, root);
-  Node* replacementNode = nullptr;
-  //Node* keyParent = nodeToDelete->getParent();
+    //Nodes related to Key
+    Node* nodeToDelete = findNode(key, root);
+    Node* replacementNode = nullptr;
+    //Node* keyParent = nodeToDelete->getParent();
 
-  //Nodes related to Key's Successor
-  //Node* keySuccessor = findSuccessor(nodeToDelete);
-  //Node* SuccessorParent = keySuccessor->getParent();
-  //Node* SuccessorChild = keySuccessor->getRightChild();
-  
-  //Nodes related to Key's Predecessor
-  //Node* keyPredecessor = findPredecessor(nodeToDelete);
-  //Node* PredecessorParent = keySuccessor->getParent();
-  //Node* PredecessorChild = keySuccessor->getLeftChild();
+    //Nodes related to Key's Successor
+    //Node* keySuccessor = findSuccessor(nodeToDelete);
+    //Node* SuccessorParent = keySuccessor->getParent();
+    //Node* SuccessorChild = keySuccessor->getRightChild();
 
-  if (search(key) == false)
-  {
-    return;
-  }
-  
-  //If the deleted node is the root and only element
-  else if (nodeToDelete->hasChild() == false && nodeToDelete == root)
-  {
-    delete root;
-    root = nullptr;
-  }
-  //For leaf node
-  else if (nodeToDelete->hasChild() == false)
-  {
-    Node* keyParent = nodeToDelete->getParent();
+    //Nodes related to Key's Predecessor
+    //Node* keyPredecessor = findPredecessor(nodeToDelete);
+    //Node* PredecessorParent = keySuccessor->getParent();
+    //Node* PredecessorChild = keySuccessor->getLeftChild();
 
-    nodeToDelete->setParent(nullptr);
-    delete nodeToDelete;
-    //If the deleted leaf node is a right child
-    if (keyParent->getRightChild() == nodeToDelete)
-    {
-      keyParent->setRightChild(nullptr);
-   
+    if (search(key) == false) {
+        return;
     }
-    //If the deleted leaf node is a left child
-    else if (keyParent->getLeftChild() == nodeToDelete)
-    {
-      keyParent->setLeftChild(nullptr);
-    }
-    
-    return;
-  }
-  //If the deleted node has children
-  else if (nodeToDelete->hasChild())
-  {
-    //If the deleted node only has a right child
-    if (nodeToDelete->rightChildExists() == true && nodeToDelete->leftChildExists() == false)
-    {
-      
-      if (nodeToDelete == root)
-      {
-        Node* newRoot = nodeToDelete->getRightChild();
+
+    //If the deleted node is the root and only element
+    else if (nodeToDelete->hasChild() == false && nodeToDelete == root) {
         delete root;
-        root = newRoot;
-      }
-      else
-      {
+        root = nullptr;
+    }
+    //For leaf node
+    else if (nodeToDelete->hasChild() == false) {
         Node* keyParent = nodeToDelete->getParent();
-        keyParent->setRightChild(nodeToDelete->getRightChild());
+
+        nodeToDelete->setParent(nullptr);
         delete nodeToDelete;
-      }
-      return;
+        //If the deleted leaf node is a right child
+        if (keyParent->getRightChild() == nodeToDelete) {
+            keyParent->setRightChild(nullptr);
+
+        }
+        //If the deleted leaf node is a left child
+        else if (keyParent->getLeftChild() == nodeToDelete) {
+            keyParent->setLeftChild(nullptr);
+        }
+
+        return;
     }
-    //If the deleted node only has a left child
-    else if (nodeToDelete->rightChildExists() == false && nodeToDelete->leftChildExists() == true)
-    {
-      if (nodeToDelete == root)
-      {
-        Node* newRoot = nodeToDelete->getLeftChild();
-        delete root;
-        root = newRoot;
-      }
-      else
-      {
-        Node* keyParent = nodeToDelete->getParent();
-        keyParent->setLeftChild(nodeToDelete->getLeftChild());
-        delete nodeToDelete;
-      }
-      return;
+    //If the deleted node has children
+    else if (nodeToDelete->hasChild()) {
+        //If the deleted node only has a right child
+        if (nodeToDelete->rightChildExists() == true && nodeToDelete->leftChildExists() == false) {
+            if (nodeToDelete == root) {
+                Node* newRoot = nodeToDelete->getRightChild();
+                delete root;
+                root = newRoot;
+            } else {
+                Node* keyParent = nodeToDelete->getParent();
+                keyParent->setRightChild(nodeToDelete->getRightChild());
+                delete nodeToDelete;
+            }
+            return;
+        }
+        //If the deleted node only has a left child
+        else if (nodeToDelete->rightChildExists() == false && nodeToDelete->leftChildExists() == true) {
+            if (nodeToDelete == root) {
+                Node* newRoot = nodeToDelete->getLeftChild();
+                delete root;
+                root = newRoot;
+            } else {
+                Node* keyParent = nodeToDelete->getParent();
+                keyParent->setLeftChild(nodeToDelete->getLeftChild());
+                delete nodeToDelete;
+            }
+            return;
+        }
+        //TODO: FIX THIS TEST CASE. ALL THE OTHERS WORK, BUT THERE MIGHT BE SOMETHING WRONG WITH THE RECURSION
+        //If the deleted node has two children
+        else if (nodeToDelete->rightChildExists() == true && nodeToDelete->leftChildExists() == true) {
+            //If the successor exists
+            if (search(findSuccessor(nodeToDelete)->getData()) == true) {
+                replacementNode = findSuccessor(nodeToDelete);
+            }
+            //If the predecessor exists
+            else if (search(findPredecessor(nodeToDelete)->getData()) == true) {
+                replacementNode = findPredecessor(nodeToDelete);
+            }
+
+            nodeToDelete->getData() = replacementNode->getData();
+            //Recursion
+            remove(replacementNode->getData());
+        }
     }
-    //TODO: FIX THIS TEST CASE. ALL THE OTHERS WORK, BUT THERE MIGHT BE SOMETHING WRONG WITH THE RECURSION
-    //If the deleted node has two children
-    else if (nodeToDelete->rightChildExists() == true && nodeToDelete->leftChildExists() == true)
-    {
-      //If the successor exists
-      if (search(findSuccessor(nodeToDelete)->getData())== true)
-      {
-        replacementNode = findSuccessor(nodeToDelete);
-      }
-      //If the predecessor exists
-      else if (search(findPredecessor(nodeToDelete)->getData()) == true)
-      {
-        replacementNode = findPredecessor(nodeToDelete);
-      }
-
-      nodeToDelete->getData() = replacementNode->getData();
-      //Recursion 
-      remove(replacementNode->getData());
-
-    }
-  }
-
-  
-
 }
 
 //dont question this one. its the worst function ive ever written i think
 
 bool BSTree::search(const string& lookforthis) const {
     Node* searchNode = findNode(lookforthis, root);
-    if (searchNode == nullptr)
-    {
-      return false;
+    if (searchNode == nullptr) {
+        return false;
     }
     /*
     Node* curr = root;
@@ -221,7 +198,6 @@ Node* BSTree::search(const string &str, Node* curr) const // HELPER FUNCTION
 */
 
 string BSTree::largest() const {
-    
     Node* curr = root;
     string largestString = "";
     if (root == nullptr) {
@@ -236,7 +212,6 @@ string BSTree::largest() const {
     }
 
     return largestString;
-
 }
 
 string BSTree::smallest() const {
@@ -247,7 +222,7 @@ string BSTree::smallest() const {
         return "";
     }
     while (curr->leftChildExists() == true) {
-       curr = curr->getLeftChild();
+        curr = curr->getLeftChild();
     }
     smallestString = curr->getData();
     if (root == nullptr) {
@@ -378,33 +353,27 @@ Node* BSTree::findNode(string nodeData, Node* startNode) const {
             currNode = currNode->getRightChild();
         }
     }
-    if (currNode == nullptr)
-    {
-      return nullptr;
+    if (currNode == nullptr) {
+        return nullptr;
     }
 
     return currNode;
 }
 
-Node* BSTree::findSuccessor(Node* startNode)
-{
-  Node* currNode = startNode->getRightChild();
-  while (currNode->getLeftChild() != nullptr)
-  {
-    currNode = currNode->getLeftChild();
-  }
+Node* BSTree::findSuccessor(Node* startNode) {
+    Node* currNode = startNode->getRightChild();
+    while (currNode->getLeftChild() != nullptr) {
+        currNode = currNode->getLeftChild();
+    }
 
-  return currNode;
+    return currNode;
 }
 
-Node* BSTree::findPredecessor(Node * startNode)
-{
-  Node* currNode = startNode->getLeftChild();
-  while (currNode->getRightChild() != nullptr)
-  {
-    currNode = currNode->getRightChild();
-  }
+Node* BSTree::findPredecessor(Node* startNode) {
+    Node* currNode = startNode->getLeftChild();
+    while (currNode->getRightChild() != nullptr) {
+        currNode = currNode->getRightChild();
+    }
 
-  return currNode;
+    return currNode;
 }
-

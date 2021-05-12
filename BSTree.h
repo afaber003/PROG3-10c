@@ -13,8 +13,8 @@ class BSTree {
     void deletetraverse(Node *);
     Node *findNode(string, Node *) const;
     int findHeight(Node *) const;
-    Node* findSuccessor(Node* startNode);
-    Node* findPredecessor(Node* startNode);
+    Node *findSuccessor(Node *startNode);
+    Node *findPredecessor(Node *startNode);
 
    public:
     /* Constructors */
