@@ -138,6 +138,7 @@ void BSTree::remove(const string& key) {
       }
       return;
     }
+    //TODO: FIX THIS TEST CASE. ALL THE OTHERS WORK, BUT THERE MIGHT BE SOMETHING WRONG WITH THE RECURSION
     //If the deleted node has two children
     else if (nodeToDelete->rightChildExists() == true && nodeToDelete->leftChildExists() == true)
     {
@@ -153,6 +154,7 @@ void BSTree::remove(const string& key) {
       }
 
       nodeToDelete->getData() = replacementNode->getData();
+      //Recursion 
       remove(replacementNode->getData());
 
     }
