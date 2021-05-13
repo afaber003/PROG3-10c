@@ -15,6 +15,8 @@ class BSTree {
     int findHeight(Node *) const;
     Node *findSuccessor(Node *startNode);
     Node *findPredecessor(Node *startNode);
+    Node* findSecond(string, Node*);
+    void remove(Node*);
 
    public:
     /* Constructors */
