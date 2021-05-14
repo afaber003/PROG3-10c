@@ -54,6 +54,12 @@ start:
 */
 void BSTree::remove(const string& key) {
     //Nodes related to Key
+    if (root == nullptr){
+        return;
+    }
+    if (root->hasChild() == false and root->getData() != key){
+        return;
+    }
     Node* nodeToDelete = findNode(key, root);
     if (nodeToDelete->getCount() > 1){
         nodeToDelete->decreaseCount();
@@ -121,20 +127,23 @@ void BSTree::remove(const string& key) {
         //If the deleted node has two children
         else if (nodeToDelete->rightChildExists() == true && nodeToDelete->leftChildExists() == true) {
             //If the successor exists
-            if (search(findSuccessor(nodeToDelete)->getData()) == true) {
-                replacementNode = findSuccessor(nodeToDelete);
-            }
-            //If the predecessor exists
-            else if (search(findPredecessor(nodeToDelete)->getData()) == true) {
+            if (search(findPredecessor(nodeToDelete)->getData()) == true) {
                 replacementNode = findPredecessor(nodeToDelete);
             }
+            //If the predecessor exists
+            else if (search(findSuccessor(nodeToDelete)->getData()) == true) {
+                replacementNode = findSuccessor(nodeToDelete);
+            }
             string temp = replacementNode->getData();
+            int tempp = replacementNode->getCount();
             replacementNode->setData(nodeToDelete->getData());
 
             //Recursion
             
             removeHelper(replacementNode);
             nodeToDelete->setData(temp);
+            nodeToDelete->setCount(tempp);
+            
             return;
         }
     }
@@ -269,7 +278,7 @@ int larger(int one, int two) {
 
 int BSTree::findHeight(Node* start) const {
     if (start == nullptr) {
-        return 0;
+        return -1;
     }
     if (start->hasChild() == false) {
         return 0;
