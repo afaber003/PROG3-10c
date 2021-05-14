@@ -55,6 +55,10 @@ start:
 void BSTree::remove(const string& key) {
     //Nodes related to Key
     Node* nodeToDelete = findNode(key, root);
+    if (nodeToDelete->getCount() > 1){
+        nodeToDelete->decreaseCount();
+        return;
+    }
 
     Node* replacementNode = nullptr;
 
