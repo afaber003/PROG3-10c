@@ -129,7 +129,7 @@ void BSTree::remove(const string& key) {
 
             //Recursion
             
-            remove(replacementNode);
+            removeHelper(replacementNode);
             nodeToDelete->setData(temp);
             return;
         }
@@ -137,10 +137,10 @@ void BSTree::remove(const string& key) {
 }
 
 //overloaded remove method for when node to be removed has two children
-void BSTree::remove(Node* removal){
+void BSTree::removeHelper(Node* removal){
     Node* nodeToDelete = removal;
 
-    Node* replacementNode = nullptr;
+    //Node* replacementNode = nullptr;
 
     if (removal == nullptr) {
         return;

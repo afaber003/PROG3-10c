@@ -16,7 +16,7 @@ class BSTree {
     Node *findSuccessor(Node *startNode);
     Node *findPredecessor(Node *startNode);
     Node* findSecond(string, Node*);
-    void remove(Node*);
+    void removeHelper(Node*);
 
    public:
     /* Constructors */
