@@ -71,7 +71,7 @@ void Node::increaseCount() {
 }
 
 void Node::decreaseCount() {
-    count--;
+    --count;
 }
 
 bool Node::leftChildExists() {

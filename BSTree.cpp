@@ -52,6 +52,91 @@ start:
   Removing a node with two children
 
 */
+
+/*
+Reworked remove and removeHelper
+Assistance from Tanessha Sharma and Geeks for Geeks algorithm
+*/
+void BSTree::remove(const string &key) {
+	Node* nodeToDelete = findNode(key, root);
+	
+  //if nodeToDelete doesn't exist
+	if (search(key) == false) {
+    return;
+  }
+
+  //empty tree
+	if (root == nullptr) {
+		return;
+	}
+	
+  //if nodeToDelete is a duplicate
+	if (nodeToDelete->getCount() > 1) {
+		nodeToDelete->decreaseCount();
+		return;
+	}
+	
+  //Recusive call
+	removeHelper(nodeToDelete, key);
+}
+
+void BSTree::removeHelper(Node* removeNode, string nodeData)
+{
+  Node* keyParent = removeNode->getParent();
+
+  //For leaf node case
+  if (removeNode->hasChild() == false)
+  {
+    //if removeNode is a root
+    if(keyParent == nullptr) 
+    {
+      root = nullptr;
+       
+    }
+    //removeNode is left leaf
+    else if(keyParent->getLeftChild() == removeNode)
+    {
+      keyParent->setLeftChild(nullptr);
+      delete removeNode;
+    }
+    //removeNode is right leaf
+    else if(keyParent->getRightChild() == removeNode)
+    {
+      keyParent->setRightChild(nullptr);
+      delete removeNode;
+    }
+    return;
+  }
+  //If successor to removeNode exists
+  else if (removeNode->leftChildExists() == true) 
+  {
+    Node* replacementNode = findPredecessor(removeNode);
+    removeNode->setData(replacementNode->getData());
+    removeNode->setCount(replacementNode->getCount());
+    if(replacementNode->getCount() > 1)
+    {
+      replacementNode->decreaseCount();
+    }
+    removeHelper(replacementNode, replacementNode->getData());
+    
+  }
+  //If predecessor to removeNode exists
+  else
+  {
+    Node* replacementNode = findSuccessor(removeNode);
+    removeNode->setData(replacementNode->getData());
+    removeNode->setCount(replacementNode->getCount());
+
+    if(replacementNode->getCount() > 1)
+    {
+      replacementNode->decreaseCount();
+    }
+    removeHelper(replacementNode, replacementNode->getData());
+    return;
+    
+  }
+}
+/*
 void BSTree::remove(const string& key) {
     //Nodes related to Key
     if (root == nullptr){
@@ -126,11 +211,11 @@ void BSTree::remove(const string& key) {
         //TODO: FIX THIS TEST CASE. ALL THE OTHERS WORK, BUT THERE MIGHT BE SOMETHING WRONG WITH THE RECURSION
         //If the deleted node has two children
         else if (nodeToDelete->rightChildExists() == true && nodeToDelete->leftChildExists() == true) {
-            //If the successor exists
+            //If the predecessor exists
             if (search(findPredecessor(nodeToDelete)->getData()) == true) {
                 replacementNode = findPredecessor(nodeToDelete);
             }
-            //If the predecessor exists
+            //If the successor exists
             else if (search(findSuccessor(nodeToDelete)->getData()) == true) {
                 replacementNode = findSuccessor(nodeToDelete);
             }
@@ -212,6 +297,7 @@ void BSTree::removeHelper(Node* removal){
         }
     }
 }
+*/
 
 //dont question this one. its the worst function ive ever written i think
 
@@ -380,3 +466,4 @@ Node* BSTree::findPredecessor(Node* startNode) {
 
     return currNode;
 }
+
